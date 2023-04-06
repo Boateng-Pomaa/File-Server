@@ -13,6 +13,15 @@ app.use(bodyparser)
 
 
 const port = process.env.PORT ||3000
+const db = process.env.DB_URL
+
+mongoose.connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    autoIndex: true,
+}).then(() => {
+    console.log('connected to MongoDB')
+})
 
 
 app.listen(port,()=>{
