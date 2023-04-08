@@ -10,7 +10,7 @@ export async function registerUser(req,res){
         const {email, password, userRole} = req.body;
 
     // Validation
-  if (!email || !password || !userRole) {
+  if (!email || !password ) {
     res.status(400).json({
         message:'Please include all fields'})
   }
@@ -19,7 +19,7 @@ export async function registerUser(req,res){
   const userExists = await userModel.findOne({ email })
 
   if (userExists) {
-    res.status(400).json({
+    res.status(400).send({
         message:'User already exists'})
   }
 
@@ -29,18 +29,17 @@ export async function registerUser(req,res){
 
   // CREATING USER
     const user = await userModel.create({
-        username,
         email,
         password,
-        userRole:userRole || "user"
+        userRole: "user"
     })
 
     /// function to generate accesstoken
-  const token = jwt.sign({user_id:user._id,email:user.email},process.env.SECRET, {
+  const token = jwt.sign({user_id:user._id,email:user.email},process.env.JWT_SECRET, {
       expiresIn: "1d"
      });
 
-     user.accessToken = token
+     user.token = token
 
     if (user){
         res.status(200).json({
@@ -70,11 +69,11 @@ export async function loginUser(req,res){
         if(user && (await bcrypt.compare(password, user.password)))
            {
 
-            const token = jwt.sign({user_id:user._id,email:user.email},process.env.SECRET, {
+            const token = jwt.sign({user_id:user._id,email:user.email},process.env.JWT_SECRET, {
                 expiresIn: "5d"
                });
           
-               user.accessToken = token
+               user.token = token
 
                 res.status(401).json({
                     message:"Logged in successful",
