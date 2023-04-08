@@ -7,7 +7,7 @@ export const protect = async(req,res,next) =>{
     //get token from header
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
         try {
-            //getting tken from header
+            //getting token from header
             token = req.headers.authorization.split(' ')[1]
 
             //verifying the token

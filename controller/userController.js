@@ -1,4 +1,4 @@
-import {userModel} from '../models/userSchema'
+import {userModel} from '../models/userSchema.js'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
@@ -23,14 +23,15 @@ export async function registerUser(req,res){
         message:'User already exists'})
   }
 
-  // Hash Password
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
+//   // Hash Password
+//   const salt = await bcrypt.genSalt(10)
+//   const hashedPassword = await bcrypt.hash(password, salt)
+
   // CREATING USER
     const user = await userModel.create({
         username,
         email,
-        password:hashedPassword,
+        password,
         userRole:userRole || "user"
     })
 
