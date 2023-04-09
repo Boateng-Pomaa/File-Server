@@ -1,4 +1,6 @@
 import {userModel} from '../models/userSchema.js'
+import {Token} from '../models/token.js'
+import sendMail from '../utils/sendMail.js'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
@@ -23,29 +25,33 @@ export async function registerUser(req,res){
         message:'User already exists'})
   }
 
-//   // Hash Password
-//   const salt = await bcrypt.genSalt(10)
-//   const hashedPassword = await bcrypt.hash(password, salt)
 
   // CREATING USER
+
+    /// function to generate accesstoken
+    const tokens = jwt.sign({email},process.env.JWT_SECRET, {
+        expiresIn: "1d"
+       })
+  
     const user = await userModel.create({
         email,
         password,
-        userRole: "user"
+        userRole: "user",
+        token:tokens
     })
 
-    /// function to generate accesstoken
-  const token = jwt.sign({user_id:user._id,email:user.email},process.env.JWT_SECRET, {
-      expiresIn: "1d"
-     });
-
-     user.token = token
-
+  
     if (user){
+        
+        const link = `${process.env.BASE_URL}/user/verify/${user._id}/${user.token}`
+        sendMail(user.email,"Password Reset Request",{name: user.email,link: link,},"./template/accountVerification.handlebars");
+        
         res.status(200).json({
             message:'Registration Successful',
             user
         })
+
+        
     }else{
         res.status(400).json({
             message:"Registration unsuccessful"
@@ -80,6 +86,7 @@ export async function loginUser(req,res){
                     user
                     
                 })
+               
             }else{
                 res.status(400).json({
                     message:'Invalid Credentials'
