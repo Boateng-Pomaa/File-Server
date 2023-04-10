@@ -6,7 +6,7 @@ POST http://localhost:5000/signup HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "fileserver353@gmail.com",
+    "email": "lindapomaa27@gmail.com",
     "password": "12345"
 }
 

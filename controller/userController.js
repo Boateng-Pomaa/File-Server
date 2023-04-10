@@ -1,6 +1,5 @@
 import {userModel} from '../models/userSchema.js'
-import {Token} from '../models/token.js'
-import sendMail from '../utils/sendMail.js'
+import {sendEmail} from '../utils/sendMail.js'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
@@ -24,28 +23,27 @@ export async function registerUser(req,res){
     res.status(400).send({
         message:'User already exists'})
   }
-
-
   // CREATING USER
 
     /// function to generate accesstoken
     const tokens = jwt.sign({email},process.env.JWT_SECRET, {
         expiresIn: "1d"
        })
-  
+       
     const user = await userModel.create({
         email,
         password,
         userRole: "user",
         token:tokens
     })
+    
+    const link = `${process.env.BASE_URL}/user/verify/${user._id}/${user.token}`
+    sendEmail(user.email,"Account Verification",
+    {email: user.email,link: link,}, 
+    "../templates/accountVerification.handlebars")
+        
 
-  
     if (user){
-        
-        const link = `${process.env.BASE_URL}/user/verify/${user._id}/${user.token}`
-        sendMail(user.email,"Password Reset Request",{name: user.email,link: link,},"./template/accountVerification.handlebars");
-        
         res.status(200).json({
             message:'Registration Successful',
             user
