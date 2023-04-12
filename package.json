@@ -36,7 +36,8 @@
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
-    "nodemailer": "^6.9.1",
+    "nodemailer": "^4.7.0",
+    "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.22",
     "path": "^0.12.7"
   }

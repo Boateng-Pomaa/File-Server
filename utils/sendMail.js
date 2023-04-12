@@ -17,7 +17,7 @@ export async function sendEmail(email, subject, payload,templates){
       })
       transporter.verify().then(console.log).catch(console.error)
   
-      const source = fs.readFileSync(path.join(__dirname,templates), "utf8");
+      const source = fs.readFileSync(path.join(__dirname,templates), "utf8")
       const compiledTemplate = handlebars.compile(source);
       
       const options = () => {
@@ -33,7 +33,7 @@ export async function sendEmail(email, subject, payload,templates){
       transporter.sendMail(options(), (error, info) => {
 
         if (error) {
-          return error
+          console.log(error)
         } else {
           console.log("Email sent successfully")
           return res.status(200).json({
@@ -43,6 +43,6 @@ export async function sendEmail(email, subject, payload,templates){
         } 
         })
     } catch (error) {
-      return error;
+      return error
     }
   }
