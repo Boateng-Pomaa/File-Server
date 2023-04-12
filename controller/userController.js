@@ -85,7 +85,7 @@ export async function registerUser(req,res){
         } else {
           res.send({
             status: "success",
-            data: "Reset Link sent successfully",
+            data: "Verification Link sent successfully",
           });
           console.log("Email sent: " + info.response);
         }
