@@ -41,33 +41,6 @@ const transporter = nodemailer.createTransport({
 
 
 
-
-// // send user password reset email
-// const data = {
-//     to: user.email,
-//     from: process.env.EMAIL_USERNAME,
-//     template: 'passwordResetRequest',
-//     subject: 'Request to Reset Password',
-//     context: {
-//       link: `http://localhost:${process.env.PORT || 3000}/resetpassword/token=${token}`,
-//       name: user.email
-//     }
-//   }
-//   await transporter.sendMail(data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export async function registerUser(req,res){
     try{
         const {email, password, userRole} = req.body;
@@ -97,15 +70,13 @@ export async function registerUser(req,res){
         userRole: "user",
         token:tokens
     })
-    // const link = `${process.env.BASE_URL}/user/verify/${user._id}/${user.token}`
-    // await sendEmail(user.email,"Account Verification",{email:user.email,link:link},'/templates')
     
     const mailOptions = {
         to: user.email,
         from: process.env.EMAIL_USERNAME,
         template: 'accountVerification',
         subject: 'Account Verification',
-        context:{link:`${process.env.BASE_URL}/user/verify/${tokens}`,
+        context:{link:`${process.env.BASE_URL}/user/verify/${user._id}/${tokens}`,
         email: user.email}
       }
       transporter.sendMail(mailOptions, (error, info) => {
@@ -140,7 +111,24 @@ export async function registerUser(req,res){
 
 
 //verifying account
-
+export async function verifyUser(req,res){
+    try{
+        const {token} = req.params.token
+        const user = await userModel.findOne({token})
+        if(user){
+            //todo : fix database update
+           user = await userModel.updateOne({id:user._id,verified:true})
+            res.send("Welcome")
+        }
+        else{
+            res.status(400).json({
+                message:"Invalid link"
+            })
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
 
 
 
@@ -183,7 +171,8 @@ export async function loginUser(req,res){
 //requesting for password reset
 
 export async function requestPasswordReset(req,res){
-    try{const {email} = req.body
+    try{
+        const {email} = req.body
     const user = await userModel.findOne({email})
 
     if (!user){
@@ -191,10 +180,8 @@ export async function requestPasswordReset(req,res){
             message:"User does not exist"
         })
     }
-
-    user = await userModel.findOneAndDelete({token})
     const resetToken = jwt.sign({email},process.env.JWT_SECRET, {
-        expiresIn: "2hr"
+        expiresIn: "1hr"
        })
 
     const hashedToken = bcrypt.hash(resetToken,10) 
@@ -202,22 +189,26 @@ export async function requestPasswordReset(req,res){
         token:hashedToken
     })  
 
-    // const data = {
-    //     to: user.email,
-    //     from: process.env.EMAIL_USERNAME,
-    //     template: 'passwordResetRequest',
-    //     subject: 'Request to Reset Password',
-    //     context: {
-    //       link: `http://localhost:${process.env.PORT || 3000}/resetpassword/token=${resetToken}`,
-    //       name: user.email
-    //     }
-    //   }
-    //   await transporter.sendMail(data)
-    
-
-    res.send("Email sent successfully")
+    const mailOptions = {
+        to: user.email,
+        from: process.env.EMAIL_USERNAME,
+        template: 'passwordResetRequest',
+        subject: 'Password Reset Request',
+        context:{link:`${process.env.BASE_URL}/user/passwordresetrequest/${user._id}/${resetToken}`,
+        email: user.email}
+      }
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error)
+        } else {
+          res.send({
+            status: "success",
+            data: "Reset Link sent successfully",
+          });
+          console.log("Email sent: " + info.response)
+        }})
 }catch(error){
-    console.error(err.message)
+    console.error(error.message)
     res.status(500).json({
         message:'server error'
 })
