@@ -117,7 +117,7 @@ export async function verifyUser(req,res){
         const user = await userModel.findOne({token})
         if(user){
             //todo : fix database update
-           user = await userModel.updateOne({id:user._id,verified:true})
+           user = await userModel.findByIdAndUpdate({id:user._id,verified:true})
             res.send("Welcome")
         }
         else{
