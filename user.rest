@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
      "email": "linda.boateng@amalitech.org",
-    "password": "12345"
+    "password": "222222"
 }
 
 
@@ -30,4 +30,13 @@ Content-Type:application/json
 
 {
     "email":"linda.boateng@amalitech.org"
+}
+
+
+###setting new pasword
+GET http://localhost:5000/user/passwordreset/6436056afde08114ee929c40/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxpbmRhLmJvYXRlbmdAYW1hbGl0ZWNoLm9yZyIsImlhdCI6MTY4MTMxNDg5MSwiZXhwIjoxNjgxMzE4NDkxfQ.3cWyWI0BCjs0sF843lzLqLz30C2jlvjYKykYmVFLnN8 HTTP/1.1
+Content-Type: application/json
+
+{
+    "password":"222222"
 }

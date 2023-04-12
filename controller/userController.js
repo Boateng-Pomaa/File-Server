@@ -173,28 +173,27 @@ export async function loginUser(req,res){
 export async function requestPasswordReset(req,res){
     try{
         const {email} = req.body
-    const user = await userModel.findOne({email})
+    var user = await userModel.findOne({email})
 
     if (!user){
         res.status(400).json({
             message:"User does not exist"
         })
     }
+    
     const resetToken = jwt.sign({email},process.env.JWT_SECRET, {
         expiresIn: "1hr"
        })
 
-    const hashedToken = bcrypt.hash(resetToken,10) 
-    user = await userModel.updateOne({
-        token:hashedToken
-    })  
+    const hashedToken = await bcrypt.hash(resetToken,10) 
+    user = await userModel.findByIdAndUpdate({_id:user._id},{token:hashedToken})  
 
     const mailOptions = {
         to: user.email,
         from: process.env.EMAIL_USERNAME,
         template: 'passwordResetRequest',
         subject: 'Password Reset Request',
-        context:{link:`${process.env.BASE_URL}/user/passwordresetrequest/${user._id}/${resetToken}`,
+        context:{link:`${process.env.BASE_URL}/user/passwordreset/${user._id}/${resetToken}`,
         email: user.email}
       }
       transporter.sendMail(mailOptions, (error, info) => {
@@ -216,3 +215,42 @@ export async function requestPasswordReset(req,res){
 }
 
 //setting a new password
+export async function resetPassword(req, res){
+  try {
+    const {id,resetToken} = req.params
+    var user = await userModel.findOne({_id:id})
+    if(!user){
+      res.send("Invalid or expired Link")
+      console.log("Invalid or expired Link")
+    }else{
+      console.log(resetToken)
+      const isValid = bcrypt.compare(resetToken, user.token)
+      if(!isValid){
+        res.send("Invalid or expired Link")
+      }
+      user.password = req.body.password
+      user = await userModel.findByIdAndUpdate({_id:user._id}, {password:req.body.password})
+
+      const mailOptions = {
+        to: user.email,
+        from: process.env.EMAIL_USERNAME,
+        template: 'passwordReset',
+        subject: 'Password Reset Successfully',
+        context:{email: user.email}
+      }
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error)
+        } else {
+          res.send({
+            status: "success",
+            data: "Password Reset successfully",
+          });
+          console.log("Email sent: " + info.response)
+        }})
+    }
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}

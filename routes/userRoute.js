@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import { check } from 'express-validator'
-import {registerUser, verifyUser, loginUser, requestPasswordReset} from '../controller/userController.js'
+import {registerUser, verifyUser, loginUser, requestPasswordReset, resetPassword} from '../controller/userController.js'
 
 
 
@@ -12,5 +12,6 @@ router.post('/login', [
       ],loginUser)
 router.get('/user/verify/:token',verifyUser)
 router.post('/user/passwordresetrequest',requestPasswordReset)
+router.get('/user/passwordreset/:id/:resetToken',resetPassword)
 
 export default router
