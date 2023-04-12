@@ -229,7 +229,12 @@ export async function resetPassword(req, res){
         res.send("Invalid or expired Link")
       }
       user.password = req.body.password
-      user = await userModel.findByIdAndUpdate({_id:user._id}, {password:req.body.password})
+      console.log(user.password)
+      const hash = await bcrypt.hash(user.password,10)
+      user = await userModel.findByIdAndUpdate({_id:user._id}, {password:hash})
+      if(user){
+        res.send("password updated")
+      }
 
       const mailOptions = {
         to: user.email,
