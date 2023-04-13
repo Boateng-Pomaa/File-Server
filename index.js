@@ -15,6 +15,7 @@ const app = express()
 app.use(express.json())
 app.use(bodyparser.json())
 app.use(express.urlencoded({ extended: false }))
+
 app.use(admins)
 app.use(route)
 app.use(cors())
