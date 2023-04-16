@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import userModel from "../models/userSchema"
+import {adminModel} from "../models/adminSchema.js"
 
 export const protect = async(req,res,next) =>{
 
@@ -14,7 +14,7 @@ export const protect = async(req,res,next) =>{
             const decoded = jwt.verify(token,process.env.JWT_SECRET)
 
             //assigning user to request object
-            req.user = await userModel.findById(decoded.id).select('-password')
+            req.admin = await adminModel.findById(decoded.id).select('-password')
 
             next()
         } catch (error) {

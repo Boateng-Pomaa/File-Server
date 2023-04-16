@@ -113,11 +113,12 @@ export async function registerUser(req,res){
 //verifying account
 export async function verifyUser(req,res){
     try{
-        const {token} = req.params.token
-        const user = await userModel.findOne({token})
+        var {id,token} = req.params
+        var user = await userModel.findById({_id:id},{token})
         if(user){
             //todo : fix database update
-           user = await userModel.findByIdAndUpdate({id:user._id,verified:true})
+            console.log(id)
+           user = await userModel.findByIdAndUpdate({_id:id},{verified:true})
             res.send("Welcome")
         }
         else{
