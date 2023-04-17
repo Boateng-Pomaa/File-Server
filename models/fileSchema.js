@@ -13,9 +13,13 @@ const fileSchema = new Schema(
         type: String,
         trim: true
       },
-      image: {
-        data: Buffer,
-        contentType: String
+      file_path: {
+        type: String,
+        required: true
+      },
+      file_mimetype: {
+        type: String,
+        required: true
       }
     },
     {
