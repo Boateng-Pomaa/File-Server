@@ -5,4 +5,4 @@ GET http://localhost:5000/search/flyer HTTP/1.1
 
 
 #####
-POST http://localhost:5000/public/files HTTP/1.1
+GET http://localhost:5000/public/files HTTP/1.1

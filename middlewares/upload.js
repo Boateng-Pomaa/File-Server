@@ -4,7 +4,7 @@ import multer from 'multer'
 const upload = multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
-        cb(null, 'public');
+        cb(null, 'public/files');
       },
       filename(req, file, cb) {
         const ext = file.mimetype.split("/")[1]
