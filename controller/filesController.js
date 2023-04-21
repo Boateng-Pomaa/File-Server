@@ -50,7 +50,7 @@ export async function uploadFile(req, res) {
 export async function downloadFile(req, res) {
     try {
         const { filename } = req.params
-        const filePath = __dirname +'public/files/' +filename
+        const filePath = __dirname + 'public/files/' + filename
 
         res.download(
             filePath,
@@ -63,7 +63,7 @@ export async function downloadFile(req, res) {
                     })
                 }
             })
-    
+
 
     } catch (error) {
         console.error(error)
@@ -83,10 +83,6 @@ export async function searchFile(req, res) {
             console.log('no such file', file)
         } else {
             return res.send(file)
-            // res.json({
-            //     message: 'file found',
-            //     file
-            // })
         }
 
     } catch (error) {
@@ -98,8 +94,6 @@ export async function searchFile(req, res) {
 
 //a feed to show list of files available for download
 export async function filesFeed(req, res) {
-
-
     const mimeType = {
         '.ico': 'image/x-icon',
         '.html': 'text/html',
@@ -125,44 +119,19 @@ export async function filesFeed(req, res) {
         var filesList = fs.readdirSync("./public/files")
         filesList.forEach(element => {
             if (fs.statSync("public/files/" + element).isFile()) {
+                const path = `public/files/${element}`
                 filesLink += `<br/><li><a href='./public/files/${element}'>
                 ${element}
-            </a></li>` + `<p><a href = '/download/${element}' download = ${element}><strong>Click here to download</strong></a></p>` + `<p><strong>Click to preview</strong></p>`
+            </a></li>` + `<p><pre><a href = '/download/${element}' download = ${element}><strong>Click here to download</strong></a>    <strong>Click to preview</strong>    <a href = '/sendfile'><strong>Click to send to an email</strong></a>></pre></p>`
             }
         })
         filesLink += "</ul>"
         res.end("<h1>List of files Available</h1> " + filesLink)
     }
+}
 
 
+////previewing files
+export async function filePreview(req, res) {
 
-    // const sanitizePath =
-    //     path.normalize(parsedUrl.pathname).replace(/^(\.\.[\/\\])+/, '')
-
-    // let pathname = path.join(__dirname, sanitizePath)
-
-    // if (!fs.existsSync(pathname)) {
-    //    return res.send(`File ${pathname} not found!`)
-    // }
-    // else {
-    //     // Read file from file system limit to 
-    //     // the current directory only.
-    //     fs.readFile(pathname, function (err, data) {
-    //         if (err) {
-    //          return   res.send(`Error in getting the file.`)
-    //         }
-    //         else {
-
-    //             // Based on the URL path, extract the
-    //             // file extension. Ex .js, .doc, ...
-    //             const ext = path.parse(pathname).ext
-    //             // If the file is found, set Content-type
-    //             // and send data
-    //             res.setHeader('Content-type',
-    //                 mimeType[ext] || 'text/plain')
-
-    //             res.end(data)
-    //         }
-    //     })
-    // }
 }

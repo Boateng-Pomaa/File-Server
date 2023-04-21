@@ -2,7 +2,6 @@ import {userModel} from '../models/userSchema.js'
 import dotenv from 'dotenv'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
-import {sendEmail} from '../utils/sendMail.js'
 import nodemailer from "nodemailer"
 import hbs from "nodemailer-express-handlebars"
 import path from "path"
@@ -258,5 +257,43 @@ export async function resetPassword(req, res){
 
   } catch (error) {
     console.log(error.message)
+  }
+}
+
+///sending file to an email
+export async function fileEmail(req,res){
+  try{
+    const {email,filename} = req.body
+    console.log(email)
+    console.log(filename)
+    const path= `./public/files/${filename}`
+    
+    const mailOptions = {
+      to: email,
+      from: process.env.EMAIL_USERNAME,
+      template: 'sendFile',
+      subject: 'File From Lizzy Business Center',
+      context:{email:email},
+      attachments:[
+        {
+          filename:filename,
+          path:path
+        }
+      ]
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error)
+      } else {
+        res.send({
+          status: "success",
+          data: "File sent successfully",
+        })
+        console.log("Email sent: " + info.response)
+      }
+    })
+  }
+catch(error){
+  console.log(error)
   }
 }
