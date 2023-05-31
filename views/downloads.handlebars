@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Downloads</title>
+</head>
+<body>
+  <h1>File Statistics</h1>
+  <ul>
+    {{#each files}}
+      <li>{{filename}} - {{download_count}} downloads  {{email_count}} emails</li>
+    {{/each}}
+  </ul>
+</body>
+</html>

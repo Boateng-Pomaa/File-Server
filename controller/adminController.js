@@ -1,4 +1,7 @@
 import {adminModel} from '../models/adminSchema.js'
+import { fileCount } from '../models/countSchema.js'
+import { handlebarsOptions } from '../middlewares/handlebarConfig.js'
+import hbs from 'nodemailer-express-handlebars'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
@@ -14,16 +17,12 @@ export async function registerUser(req,res){
     res.status(400).json({
         message:'Please include all fields'})
   }
-
-  // Find if user already exists
   const userExists = await adminModel.findOne({ email })
 
   if (userExists) {
     res.status(400).send({
         message:'User already exists'})
   }
-
-
 
   // CREATING USER
     const admin = await adminModel.create({
@@ -93,3 +92,20 @@ export async function loginUser(req,res){
 }
 
 
+export async function adminView(req, res) {
+   try {
+    const files = await fileCount.find()
+    if (!files) {
+        console.log('Error loading files')
+        return
+    }
+    res.render('downloads',{files})
+    
+
+   } catch (error) {
+    console.log(error)
+    res.send(error)
+   }
+   
+
+}

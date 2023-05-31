@@ -8,7 +8,7 @@ const upload = multer({
       },
       filename(req, file, cb) {
         const ext = file.mimetype.split("/")[1]
-        cb(null,`${file.originalname}-${Date.now()}.${ext}`)
+        cb(null,`${file.originalname}`)
       }
     }),
     limits: {

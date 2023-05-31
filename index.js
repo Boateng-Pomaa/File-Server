@@ -6,6 +6,9 @@ import bodyparser from "body-parser"
 import route from './routes/userRoute.js'
 import admins from './routes/adminRoute.js'
 import files from './routes/fileRoute.js'
+import { handlebarsOptions } from "./middlewares/handlebarConfig.js"
+import hbs from "nodemailer-express-handlebars"
+
 
 dotenv.config()
 
@@ -21,6 +24,12 @@ app.use(files)
 app.use(route)
 app.use(express.static('public'))
 app.use(express.static('files'))
+app.set('views','/views')
+app.engine('hbs',hbs(handlebarsOptions))
+app.set('view engine', 'hbs')
+
+
+
 const port = process.env.PORT ||3000
 const db = process.env.DB_URL
 

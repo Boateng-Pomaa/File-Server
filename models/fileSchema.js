@@ -20,6 +20,12 @@ const fileSchema = new Schema(
       file_mimetype: {
         type: String,
         required: true
+      },
+      downloads:{
+        type:Number,
+      },
+      emails:{
+        type:Number
       }
     },
     {

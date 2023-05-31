@@ -1,7 +1,7 @@
 @url ="http://localhost:5000/
 
 ###searching for a file
-GET http://localhost:5000/search/flyer HTTP/1.1
+GET http://localhost:5000/search/calendar HTTP/1.1
 
 
 #####
@@ -14,6 +14,12 @@ Content-Type:application/json
 
 {
     "email":"lindapomaa27@gmail.com",
-    "filename":"sachet.pdf"
+    "filename":"Man_United.png"
 }
 
+#####downloading
+GET http://localhost:5000/download/sachet.pdf HTTP/1.1
+
+
+####
+GET http://localhost:5000/admin/downloads HTTP/1.1

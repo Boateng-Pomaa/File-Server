@@ -1,14 +1,15 @@
 import express from 'express'
 const router = express.Router()
-import upload from '../middlewares/upload.js'
-import {downloadFile,uploadFile, searchFile,filesFeed} from '../controller/filesController.js'
-import { protect } from '../middlewares/auth.js'
+
+import { downloadFile, searchFile, filesFeed, filePreview } from '../controller/filesController.js'
+
 
 
 router.get('/download/:filename', downloadFile)
-router.post('/admin/upload',upload.single('file'), uploadFile)
-router.get('/search/:title', searchFile)
-router.get('/public/files',filesFeed)
+    .get('/search/:title', searchFile)
+    .get('/preview/:title', filePreview)
+    .get('/public/files', filesFeed)
+
 
 
 
