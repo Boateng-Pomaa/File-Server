@@ -4,38 +4,9 @@ import { transporter } from '../middlewares/handlebarConfig.js'
 import dotenv from 'dotenv'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
-import nodemailer from "nodemailer"
-import hbs from "nodemailer-express-handlebars"
-import path from "path"
+
 
 dotenv.config()
-
-// const transporter = nodemailer.createTransport({
-//   host: 'smpt.gmail.com',
-//   service: 'gmail',
-//   port: 465,
-//   secure: true,
-//   logger: true,
-//   debugger: true,
-//   secureConnection: false,
-//   auth: {
-//     user: process.env.EMAIL_USERNAME,
-//     pass: process.env.EMAIL_PASSWORD,
-//   },
-// })
-
-// const handlebarsOptions = {
-//   viewEngine: {
-//     extName: ".handlebars",
-//     partialsDir: path.resolve("templates"),
-//     defaultLayout: false,
-//   },
-//   viewPath: path.resolve("templates"),
-//   extName: ".handlebars",
-// }
-
-// transporter.use('compile', hbs(handlebarsOptions))
-
 
 
 
@@ -286,11 +257,11 @@ export async function fileEmail(req, res) {
         }
       ]
     }
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, async (error, info) => {
       if (error) {
         console.log(error)
       } else {
-        const sent = fileCount.updateOne({ filename: filename },
+        const sent = await fileCount.updateOne({ filename: filename },
           { $inc: { email_count: 1 } }, { upsert: true })
         if (sent) {
           console.log("Email sent: " + info.response)

@@ -29,10 +29,10 @@ export async function uploadFile(req, res) {
         })
         if (file) {
             res.send('file uploaded successfully.')
-            console.log('file uploaded successfully')
+            
         } else {
             res.send('file uploaded failed')
-            console.log('file uploaded failed')
+           
         }
         // }
         // console.log("not an admin")
@@ -89,50 +89,56 @@ export async function searchFile(req, res) {
         res.json({files:matchingFiles})
 
     } catch (error) {
-        console.log(error)
+       res.status(500).send("Internal Server Error"+error)
     }
 }
 
 
 
 //a feed to show list of files available for download
-export async function filesFeed(req, res) {
-    const parsedUrl = url.parse(req.url)
-
-    if (parsedUrl.pathname === "/public/files") {
-        var filesLink = "<ul>"
-        res.setHeader('Content-type', 'text/html')
-        var filesList = fs.readdirSync("./public/files")
-        filesList.forEach(element => {
-            if (fs.statSync("public/files/" + element).isFile()) {
-                const path = `public/files/${element}`
-                filesLink += `<br/><li><a href='./public/files/${element}'>
-                ${element}
-</a></li>` + `<p><pre><a href = '/download/${element}' download = ${element}><strong>Click here to download</strong></a>    <strong id="preView">Click to preview</strong>    <a href = '/sendfile'><strong>Click to send to an email</strong></a>></pre></p>`
-
-}
+export async function filesFeed(req, res) {   
+    try {
+        const Path = "public/files"
+        fs.readdir(Path,(err, files) =>{
+            if(err) {
+                return res.status().send("Error Loading Files")
+            }else{
+                res.json({files: files})
+            }
         })
-        filesLink += "</ul>"
-        res.end("<h1>List of files Available</h1> " + filesLink)
+
+
+    } catch (error) {
+        res.status(500).send({
+            message:"Internal Error"
+        })
     }
+      
+        
 }
 
 
 ////previewing files
 export async function filePreview(req, res) {
-    const {filename} = req.params
+    try {
+        const {filename} = req.params
     const filePath = `/public/files/${filename}`
     fs.readFile(filePath, (err, data) => {
         if (err) {
-            res.status(404).send('File Not Found')
+          return  res.status(404).send('File Not Found')
         }else{
             const contentType = mime.getType(filename)
             if(contentType){
-                res.setHeader('Content-Type', contentType)
+              return  res.setHeader('Content-Type', contentType)
+                res.send(data)
             }
-            res.send(data)
+            
         }
 })
+    } catch (error) {
+        res.status(500).send("Internal Server Error: " + error)
+    }
+    
 }
 
 

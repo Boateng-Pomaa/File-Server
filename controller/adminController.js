@@ -1,7 +1,5 @@
 import {adminModel} from '../models/adminSchema.js'
 import { fileCount } from '../models/countSchema.js'
-import { handlebarsOptions } from '../middlewares/handlebarConfig.js'
-import hbs from 'nodemailer-express-handlebars'
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
@@ -44,7 +42,7 @@ export async function registerUser(req,res){
             admin
         })
     }else{
-        res.status(400).json({
+       return res.status(400).json({
             message:"Registration unsuccessful"
         })
     }
@@ -67,18 +65,18 @@ export async function loginUser(req,res){
            {
 
             const token = jwt.sign({admin_id:admin._id,email:admin.email},process.env.JWT_SECRET, {
-                expiresIn: "5d"
+                expiresIn: "1d"
                });
           
                admin.token = token
 
-                res.status(401).json({
+                res.status(200).json({
                     message:"Logged in successful",
                     admin
                     
                 })
             }else{
-                res.status(400).json({
+               return res.status(400).json({
                     message:'Invalid Credentials'
                 })
                    }
@@ -97,9 +95,9 @@ export async function adminView(req, res) {
     const files = await fileCount.find()
     if (!files) {
         console.log('Error loading files')
-        return
+        return res.status(404).send({message:"Error loading files"})
     }
-    res.render('downloads',{files})
+    res.json({files:files})
     
 
    } catch (error) {
