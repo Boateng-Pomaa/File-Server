@@ -19,7 +19,7 @@ export async function registerUser(req, res) {
 
     // Validation
     if (!email || !password) {
-      res.status(400).json({
+      return res.status(400).json({
         message: 'Please include all fields'
       })
     }
@@ -27,7 +27,7 @@ export async function registerUser(req, res) {
     const userExists = await userModel.findOne({ email })
 
     if (userExists) {
-      res.status(400).send({
+      return res.status(400).json({
         message: 'User already exists'
       })
     }
@@ -57,13 +57,15 @@ export async function registerUser(req, res) {
     }
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error);
+        return res.status(400).json({ message: "Failed to send email " + error })
+
       } else {
-        res.send({
+        console.log("Email sent: " + info.response)
+        return res.json({
           status: "success",
           data: "Verification Link sent successfully",
-        });
-        console.log("Email sent: " + info.response);
+        })
+
       }
     })
 
@@ -75,7 +77,7 @@ export async function registerUser(req, res) {
 
 
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Registration unsuccessful"
       })
     }
@@ -92,17 +94,16 @@ export async function verifyUser(req, res) {
     var { id, token } = req.params
     var user = await userModel.findById({ _id: id }, { token })
     if (user) {
-      console.log(id)
       user = await userModel.findByIdAndUpdate({ _id: id }, { verified: true })
-      res.send("Welcome")
+      res.redirect('/public/files')
     }
     else {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Invalid link"
       })
     }
   } catch (error) {
-    console.log(error)
+    res.status(500).send("Internal Server Error")
   }
 }
 
@@ -129,7 +130,7 @@ export async function loginUser(req, res) {
       })
 
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         message: 'Invalid Credentials'
       })
     }
@@ -150,7 +151,7 @@ export async function requestPasswordReset(req, res) {
     var user = await userModel.findOne({ email })
 
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "User does not exist"
       })
     }
@@ -174,17 +175,16 @@ export async function requestPasswordReset(req, res) {
     }
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error)
+        return res.status(400).json(error)
       } else {
         res.send({
           status: "success",
           data: "Reset Link sent successfully",
-        });
+        })
         console.log("Email sent: " + info.response)
       }
     })
   } catch (error) {
-    console.error(error.message)
     res.status(500).json({
       message: 'server error'
     })
@@ -197,16 +197,13 @@ export async function resetPassword(req, res) {
     const { id, resetToken } = req.params
     var user = await userModel.findOne({ _id: id })
     if (!user) {
-      res.send("Invalid or expired Link")
-      console.log("Invalid or expired Link")
+      return res.send("Invalid or expired Link")
     } else {
-      console.log(resetToken)
       const isValid = bcrypt.compare(resetToken, user.token)
       if (!isValid) {
-        res.send("Invalid or expired Link")
+        return res.send("Invalid or expired Link")
       }
       user.password = req.body.password
-      console.log(user.password)
       const hash = await bcrypt.hash(user.password, 10)
       user = await userModel.findByIdAndUpdate({ _id: user._id }, { password: hash })
       if (user) {
@@ -222,19 +219,19 @@ export async function resetPassword(req, res) {
       }
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log(error)
+          return res.status(400).json({ error })
         } else {
           res.send({
             status: "success",
             data: "Password Reset successfully",
-          });
+          })
           console.log("Email sent: " + info.response)
         }
       })
     }
 
   } catch (error) {
-    console.log(error.message)
+    res.status(500).send("Internal Server Error")
   }
 }
 
@@ -243,7 +240,6 @@ export async function fileEmail(req, res) {
   try {
     const { email, filename } = req.body
     const path = `./public/files/${filename}`
-    //const path2 = `public/files/${filename}`
     const mailOptions = {
       to: email,
       from: process.env.EMAIL_USERNAME,
@@ -259,7 +255,7 @@ export async function fileEmail(req, res) {
     }
     transporter.sendMail(mailOptions, async (error, info) => {
       if (error) {
-        console.log(error)
+        return res.status(400).json({error})
       } else {
         const sent = await fileCount.updateOne({ filename: filename },
           { $inc: { email_count: 1 } }, { upsert: true })
@@ -276,6 +272,6 @@ export async function fileEmail(req, res) {
     })
   }
   catch (error) {
-    console.log(error)
+   res.status(500).send("Internal Server Error")
   }
 }

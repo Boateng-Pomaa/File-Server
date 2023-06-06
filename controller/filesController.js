@@ -1,24 +1,15 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import url from "url"
 import fs from 'fs'
 import mime from 'mime'
-import path from 'path'
 import { fileModel } from '../models/fileSchema.js'
-import { adminModel } from '../models/adminSchema.js'
 import { fileCount } from '../models/countSchema.js'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-  
+
 
 
 
 //uploading the files
 export async function uploadFile(req, res) {
     try {
-        // const { id } = req.params
-        // const check = await adminModel.findById({ _id:id})
-        // if (check) {
         const { title, description } = req.body
         const { path, mimetype } = req.file
         const file = await fileModel.create({
@@ -29,19 +20,14 @@ export async function uploadFile(req, res) {
         })
         if (file) {
             res.send('file uploaded successfully.')
-            
-        } else {
-            res.send('file uploaded failed')
-           
-        }
-        // }
-        // console.log("not an admin")
-        // return res.send("not an admin")
 
+        } else {
+            return res.send('file uploaded failed')
+
+        }
     }
     catch (error) {
-        res.status(400).send('Error while uploading file.')
-        console.log(error)
+        res.status(500).send('Internal Server Error')
     }
 }
 
@@ -52,30 +38,31 @@ export async function uploadFile(req, res) {
 export async function downloadFile(req, res) {
     try {
         const { filename } = req.params
-        const counts = await fileCount.updateOne({ filename: filename},{$inc:{download_count:1}},{ upsert: true })
-        if (counts) {
-            res.download(
-                filename,
-                `downloaded-${filename}`,
-                (err) => {
-                    if (err) {
-                        res.send({
-                            error: err,
-                            msg: "Problem downloading the file"
-                        })
+        res.download(
+            filename,
+            `downloaded-${filename}`,
+            async (err) => {
+                if (err) {
+                    return res.send({
+                        error: err,
+                        msg: "Problem downloading the file"
+                    })
+                } else {
+                    await fileCount.updateOne({ filename: filename }, { $inc: { download_count: 1 } }, { upsert: true })
 
-                    }
-                })
-        }
+                }
+            })
+
     } catch (error) {
-        console.log(error)
+        res.status(500).send("Internal Server Error")
     }
 
 }
 
-function searchFiles(directory, search){
+function searchFiles(directory, search) {
     const files = fs.readdirSync(directory)
-    const matchFiles = files.filter(files=> files.includes(search))
+    const searchPattern = new RegExp(search, 'i')
+    const matchFiles = files.filter(files => searchPattern.test(files))
     return matchFiles
 }
 
@@ -83,62 +70,58 @@ function searchFiles(directory, search){
 export async function searchFile(req, res) {
     try {
         const { title } = req.params
-        console.log(title)
         const directory = './public/files'
-        const matchingFiles = searchFiles(directory,title)
-        res.json({files:matchingFiles})
+        const matchingFiles = searchFiles(directory, title)
+        res.json({ files: matchingFiles })
 
     } catch (error) {
-       res.status(500).send("Internal Server Error"+error)
+        res.status(500).send("Internal Server Error" + error)
     }
 }
 
 
-
 //a feed to show list of files available for download
-export async function filesFeed(req, res) {   
+export async function filesFeed(req, res) {
     try {
         const Path = "public/files"
-        fs.readdir(Path,(err, files) =>{
-            if(err) {
+        fs.readdir(Path, (err, files) => {
+            if (err) {
                 return res.status().send("Error Loading Files")
-            }else{
-                res.json({files: files})
+            } else {
+                res.json({ files: files })
             }
         })
-
-
     } catch (error) {
         res.status(500).send({
-            message:"Internal Error"
+            message: "Internal Error"
         })
     }
-      
-        
+
+
 }
 
 
 ////previewing files
 export async function filePreview(req, res) {
     try {
-        const {filename} = req.params
-    const filePath = `/public/files/${filename}`
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-          return  res.status(404).send('File Not Found')
-        }else{
-            const contentType = mime.getType(filename)
-            if(contentType){
-              return  res.setHeader('Content-Type', contentType)
+        const { filename } = req.params
+        const filePath = `/public/files/${filename}`
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                return res.status(404).send('File Not Found')
+            } else {
+                const contentType = mime.getType(filename)
+                if (contentType) {
+                    return res.setHeader('Content-Type', contentType)
+                }
                 res.send(data)
+
             }
-            
-        }
-})
+        })
     } catch (error) {
         res.status(500).send("Internal Server Error: " + error)
     }
-    
+
 }
 
 
