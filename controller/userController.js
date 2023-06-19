@@ -83,6 +83,7 @@ export async function registerUser(req, res) {
     }
   } catch (err) {
     console.log(err)
+    res.status(500).send('Internal server error')
   }
 
 }
@@ -95,7 +96,7 @@ export async function verifyUser(req, res) {
     var user = await userModel.findById({ _id: id }, { token })
     if (user) {
       user = await userModel.findByIdAndUpdate({ _id: id }, { verified: true })
-      res.redirect('/public/files')
+      res.redirect('/files')
     }
     else {
       return res.status(400).json({
@@ -122,8 +123,8 @@ export async function loginUser(req, res) {
         expiresIn: "1d"
       })
       user.token = token
-
-      res.status(200).json({
+      //res.redirect('/files')
+      return res.status(200).json({
         message: "Logged in successful",
         user
 
@@ -136,8 +137,7 @@ export async function loginUser(req, res) {
     }
   }
   catch (err) {
-    console.error(err.message)
-    res.status(500).json({
+    return res.status(500).json({
       message: 'server error'
     })
   }
@@ -177,7 +177,7 @@ export async function requestPasswordReset(req, res) {
       if (error) {
         return res.status(400).json(error)
       } else {
-        res.send({
+        res.json({
           status: "success",
           data: "Reset Link sent successfully",
         })
@@ -207,7 +207,7 @@ export async function resetPassword(req, res) {
       const hash = await bcrypt.hash(user.password, 10)
       user = await userModel.findByIdAndUpdate({ _id: user._id }, { password: hash })
       if (user) {
-        res.send("password updated")
+        res.json({ message: "password updated" })
       }
 
       const mailOptions = {
@@ -235,9 +235,30 @@ export async function resetPassword(req, res) {
   }
 }
 
+
+function isValidToken(token) {
+  try {
+    const userToken = jwt.verify(token, process.env.JWT_SECRET)
+   const expired =userToken.exp
+    if (expired < Date.now()/1000) {
+      return false
+    }
+    else {
+      return true
+    }
+  } catch (error) {
+    return false
+  }
+
+
+}
 ///sending file to an email
 export async function fileEmail(req, res) {
   try {
+    const token = req.headers.authorization.split(' ')[1]
+    if (!token || !isValidToken(token)) {
+      return res.status(401).json({ message: "Please login to continue" })
+    }
     const { email, filename } = req.body
     const path = `./public/files/${filename}`
     const mailOptions = {
@@ -255,14 +276,14 @@ export async function fileEmail(req, res) {
     }
     transporter.sendMail(mailOptions, async (error, info) => {
       if (error) {
-        return res.status(400).json({error})
+        return res.status(400).json({ error })
       } else {
         const sent = await fileCount.updateOne({ filename: filename },
           { $inc: { email_count: 1 } }, { upsert: true })
         if (sent) {
           console.log("Email sent: " + info.response)
         }
-        res.send({
+        res.json({
           status: "success",
           data: "File sent successfully",
 
@@ -272,6 +293,6 @@ export async function fileEmail(req, res) {
     })
   }
   catch (error) {
-   res.status(500).send("Internal Server Error")
+    res.status(500).send("Internal Server Error")
   }
 }

@@ -91,15 +91,16 @@ export async function loginUser(req,res){
 
 export async function adminView(req, res) {
    try {
-    const files = await fileCount.find()
+    const files = await fileCount.find().lean()
     if (!files) {
         return res.status(400).send({message:"Error loading files"})
     }
-    res.json({files:files})
+    res.render('downloads',{files})
     
 
    } catch (error) {
-    res.status().send("Internal Server Error")
+    console.log(error)
+    res.status(500).send("Internal Server Error")
    }
    
 

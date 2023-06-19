@@ -19,10 +19,10 @@ export async function uploadFile(req, res) {
             file_mimetype: mimetype
         })
         if (file) {
-            res.send('file uploaded successfully.')
+            res.json('file uploaded successfully.')
 
         } else {
-            return res.send('file uploaded failed')
+            return res.json('file uploaded failed')
 
         }
     }
@@ -32,11 +32,27 @@ export async function uploadFile(req, res) {
 }
 
 
-
+function isValidToken(token) {
+    try {
+        const userToken = jwt.verify(token, process.env.JWT_SECRET)
+        if (userToken.exp < Date.now() / 1000) {
+            return false
+        }
+        else {
+            return true
+        }
+    } catch (error) {
+        return false
+    }
+}
 
 ///downloading files
 export async function downloadFile(req, res) {
     try {
+        const token = req.headers.authorization.split(' ')[1]
+        if (!token || !isValidToken(token)) {
+            return res.status(401).json({ message: "Please login to continue" })
+        }
         const { filename } = req.params
         res.download(
             filename,
@@ -86,7 +102,7 @@ export async function filesFeed(req, res) {
         const Path = "public/files"
         fs.readdir(Path, (err, files) => {
             if (err) {
-                return res.status().send("Error Loading Files")
+                return res.status(400).send("Error Loading Files")
             } else {
                 res.json({ files: files })
             }
@@ -119,7 +135,7 @@ export async function filePreview(req, res) {
             }
         })
     } catch (error) {
-        res.status(500).send("Internal Server Error: " + error)
+        res.status(500).send("Internal Server Error")
     }
 
 }

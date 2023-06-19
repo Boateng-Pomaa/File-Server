@@ -13,9 +13,6 @@ const countSchema = new Schema({
     },
     email_count: {
         type: Number
-    },
-    tag: {
-        type: String
     }
 })
 

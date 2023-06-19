@@ -1,6 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import { check } from 'express-validator'
+import {userProtect} from '../middlewares/usersAuth.js'
 import { registerUser, verifyUser, loginUser, requestPasswordReset, resetPassword, fileEmail } from '../controller/userController.js'
 
 
@@ -13,7 +14,7 @@ router.post('/signup', registerUser)
   .get('/user/verify/:id/:token', verifyUser)
   .post('/user/passwordresetrequest', requestPasswordReset)
   .get('/user/passwordreset/:id/:resetToken', resetPassword)
-  .post('/sendfile', fileEmail)
+  .post('/sendfile',userProtect, fileEmail)
 
 
   

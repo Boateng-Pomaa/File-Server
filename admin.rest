@@ -6,7 +6,7 @@ POST http://localhost:5000/register/admin HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "admina@example.com",
+    "email": "linda.boateng@amalitech.org",
     "password": "123456"
 }
 
@@ -16,10 +16,10 @@ POST http://localhost:5000/login/admin HTTP/1.1
 Content-Type: application/json
 
 {
-     "email": "admina@example.com",
+     "email": "linda.boateng@amalitech.org",
     "password": "123456"
 }
 
 
 ####
-GET http://localhost:5000/public/files/admin
+GET http://localhost:5000/admin/downloads HTTP/1.1

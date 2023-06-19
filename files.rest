@@ -5,15 +5,16 @@ GET http://localhost:5000/search/Calen HTTP/1.1
 
 
 #####
-GET http://localhost:5000/public/files HTTP/1.1
+GET http://localhost:5000/files HTTP/1.1
 
 
 ###sending file email
 POST http://localhost:5000/sendfile HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzNjA1NmFmZGUwODExNGVlOTI5YzQwIiwiZW1haWwiOiJsaW5kYS5ib2F0ZW5nQGFtYWxpdGVjaC5vcmciLCJpYXQiOjE2ODcxMzk2OTEsImV4cCI6MTY4NzIyNjA5MX0.TThSGJReah6XsJGLnCQJM9GJwVIZP13rzphdJGLrOXk
 Content-Type:application/json
 
 {
-    "email":"lindapomaa27@gmail.com",
+    "email":"linda.boateng@amalitech.org",
     "filename":"Man_United.png"
 }
 
