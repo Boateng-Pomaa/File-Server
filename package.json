@@ -1,6 +1,9 @@
 {
   "name": "file-server",
   "version": "1.0.0",
+  "engines": {
+    "node":"16.16.0"
+  },
   "description": "A file server for downloading and sending documents to customers.",
   "type": "module",
   "main": "index.js",
