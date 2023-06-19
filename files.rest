@@ -4,8 +4,8 @@
 GET http://localhost:5000/search/Calen HTTP/1.1
 
 
-#####
-GET http://localhost:5000/files HTTP/1.1
+##### files feed
+GET http://localhost:5000/ HTTP/1.1
 
 
 ###sending file email

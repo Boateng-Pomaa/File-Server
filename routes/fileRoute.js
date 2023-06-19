@@ -9,7 +9,7 @@ import { downloadFile, searchFile, filesFeed, filePreview } from '../controller/
 router.get('/download/:filename',userProtect, downloadFile)
     .get('/search/:title', searchFile)
     .get('/preview/:title', filePreview)
-    .get('/files', filesFeed)
+    .get('/', filesFeed)
 
 
 

@@ -32,7 +32,8 @@ app.use(express.static('files'))
 
 
 const port = process.env.PORT ||3000
-const db = process.env.DB_URL.toString()
+const db = process.env.DB_URL
+
 
 
 mongoose.connect(db, {
