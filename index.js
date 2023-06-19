@@ -32,7 +32,7 @@ app.use(express.static('files'))
 
 
 const port = process.env.PORT ||3000
-const db = process.env.DB_URL
+const db = process.env.DB_URL.toString()
 
 mongoose.connect(db, {
     useNewUrlParser: true,
