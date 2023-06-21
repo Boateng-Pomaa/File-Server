@@ -2,11 +2,11 @@
 
 
 ### Signup
-POST http://localhost:5000/signup HTTP/1.1
+POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/signup 
 Content-Type: application/json
 
 {
-    "email": "lindapomaa27@gmail.com",
+    "email": "joyemim691@byorby.com",
     "password": "111111"
 }
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 
 ####verifying
-GET http://localhost:5000/user/verify/643854cf32ce93869bada76d/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxpbmRhcG9tYWEyN0BnbWFpbC5jb20iLCJpYXQiOjE2ODE0MTMzMjcsImV4cCI6MTY4MTQ5OTcyN30.xoiBCcy-xV6o7sCcVwHk7Qo9WBKXuQgy9FjkpMhO0O4/ HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/verify/6492dcb7178b5a303f0a0555/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpveWVtaW02OTFAYnlvcmJ5LmNvbSIsImlhdCI6MTY4NzM0NjM1OSwiZXhwIjoxNjg3NDMyNzU5fQ.P7tDpQDNEwH-1QgBDwZ2KpUOwtWy1eMXRry6Du1lwHo
 
 ###requesting for password reset
 POST http://localhost:5000/user/passwordresetrequest HTTP/1.1
@@ -40,3 +40,19 @@ Content-Type: application/json
 {
     "password":"333333"
 }
+
+
+#####
+ POST  https://lizzy-files-f7a38d64c9a1.herokuapp.com/login
+ Content-Type: application/json
+ 
+ {
+     "email": "linda.boateng@amalitech.org",
+    "password": "333333"
+}
+
+#######
+ GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/
+
+
+ 

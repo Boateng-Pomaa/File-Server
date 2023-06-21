@@ -96,7 +96,7 @@ export async function verifyUser(req, res) {
     var user = await userModel.findById({ _id: id }, { token })
     if (user) {
       user = await userModel.findByIdAndUpdate({ _id: id }, { verified: true })
-      res.redirect('/files')
+      res.redirect('/')
     }
     else {
       return res.status(400).json({
@@ -123,12 +123,12 @@ export async function loginUser(req, res) {
         expiresIn: "1d"
       })
       user.token = token
-      //res.redirect('/files')
-      return res.status(200).json({
-        message: "Logged in successful",
-        user
+      //res.redirect('/')
+      // return res.status(200).json({
+      //   message: "Logged in successful",
+      //   user
 
-      })
+      // })
 
     } else {
       return res.status(400).json({
