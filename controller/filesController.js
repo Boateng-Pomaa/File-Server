@@ -1,5 +1,9 @@
 import fs from 'fs'
 import mime from 'mime'
+import path from 'path'
+import {fileURLToPath} from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 import { fileModel } from '../models/fileSchema.js'
 import { fileCount } from '../models/countSchema.js'
 
@@ -104,7 +108,7 @@ export async function filesFeed(req, res) {
             if (err) {
                 return res.status(400).send("Error Loading Files")
             } else {
-                res.json({ files: files })
+                res.render('home',{ files })
             }
         })
     } catch (error) {
@@ -121,9 +125,10 @@ export async function filesFeed(req, res) {
 export async function filePreview(req, res) {
     try {
         const { filename } = req.params
-        const filePath = `/public/files/${filename}`
+        const filePath = `./public/files/${filename}`
         fs.readFile(filePath, (err, data) => {
             if (err) {
+                console.log(err)
                 return res.status(404).send('File Not Found')
             } else {
                 const contentType = mime.getType(filename)

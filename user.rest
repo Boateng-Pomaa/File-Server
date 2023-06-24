@@ -52,7 +52,7 @@ Content-Type: application/json
 }
 
 #######
- GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/
+ GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/home
 
 
  

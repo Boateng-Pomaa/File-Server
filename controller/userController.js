@@ -96,7 +96,7 @@ export async function verifyUser(req, res) {
     var user = await userModel.findById({ _id: id }, { token })
     if (user) {
       user = await userModel.findByIdAndUpdate({ _id: id }, { verified: true })
-      res.redirect('/')
+      res.redirect('/home')
     }
     else {
       return res.status(400).json({
@@ -123,7 +123,7 @@ export async function loginUser(req, res) {
         expiresIn: "1d"
       })
       user.token = token
-      //res.redirect('/')
+      //res.redirect('/home')
       // return res.status(200).json({
       //   message: "Logged in successful",
       //   user
@@ -207,9 +207,6 @@ export async function resetPassword(req, res) {
       const hash = await bcrypt.hash(user.password, 10)
       user = await userModel.findByIdAndUpdate({ _id: user._id }, { password: hash })
       if (user) {
-        res.json({ message: "password updated" })
-      }
-
       const mailOptions = {
         to: user.email,
         from: process.env.EMAIL_USERNAME,
@@ -229,6 +226,7 @@ export async function resetPassword(req, res) {
         }
       })
     }
+  }
 
   } catch (error) {
     res.status(500).send("Internal Server Error")

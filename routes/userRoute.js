@@ -14,7 +14,7 @@ router.post('/signup', registerUser)
   .get('/user/verify/:id/:token', verifyUser)
   .post('/user/passwordresetrequest', requestPasswordReset)
   .get('/user/passwordreset/:id/:resetToken', resetPassword)
-  .post('/sendfile',userProtect, fileEmail)
+  .post('/sendfile', fileEmail)
 
 
   
