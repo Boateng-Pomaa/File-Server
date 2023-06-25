@@ -126,6 +126,7 @@ export async function filePreview(req, res) {
     try {
         const { filename } = req.params
         const filePath = `./public/files/${filename}`
+        console.log(filePath)
         fs.readFile(filePath, (err, data) => {
             if (err) {
                 console.log(err)
@@ -133,7 +134,7 @@ export async function filePreview(req, res) {
             } else {
                 const contentType = mime.getType(filename)
                 if (contentType) {
-                    return res.setHeader('Content-Type', contentType)
+                     res.setHeader('Content-Type', contentType)
                 }
                 res.send(data)
 
@@ -144,6 +145,12 @@ export async function filePreview(req, res) {
     }
 
 }
+
+
+
+
+
+
 
 
 

@@ -2,7 +2,7 @@
   "name": "file-server",
   "version": "1.0.0",
   "engines": {
-    "node":"16.16.0"
+    "node": "16.16.0"
   },
   "description": "A file server for downloading and sending documents to customers.",
   "type": "module",
@@ -47,6 +47,8 @@
     "nodemailer": "^6.0.0",
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.22",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "path": "^0.12.7",
     "session": "^0.1.0"
   },

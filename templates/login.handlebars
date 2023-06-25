@@ -50,15 +50,18 @@
 <body>
   <div class="container">
     <h2>Login</h2>
-    <form id="login-form">
+
+    
+    <form action="/login" method="POST">
       <input type="text" id="username" placeholder="Username" required>
       <input type="password" id="password" placeholder="Password" required>
-      <input type="submit" value="Log in">
+      <input type="submit" value="Login">
     </form>
+    <p> <a href="/user/passwordresetrequest">Forgot Password?</a></p>
     <p id="message"></p>
   </div>
 
-  <script>
+  {{!-- <script>
     document.getElementById("login-form").addEventListener("submit", function(event) {
       event.preventDefault() // Prevent the form from submitting
 
@@ -95,6 +98,6 @@
       }
       xhr.send(JSON.stringify(data))
     })
-  </script>
+  </script> --}}
 </body>
 </html>

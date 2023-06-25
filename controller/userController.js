@@ -119,11 +119,11 @@ export async function loginUser(req, res) {
     const user = await userModel.findOne({ email })
     if (user && (await bcrypt.compare(password, user.password))) {
 
-      const token = jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_SECRET, {
+      const token = jwt.sign({id: user._id, email: user.email }, process.env.JWT_SECRET, {
         expiresIn: "1d"
       })
       user.token = token
-      //res.redirect('/home')
+      res.redirect('/home')
       // return res.status(200).json({
       //   message: "Logged in successful",
       //   user
@@ -292,5 +292,11 @@ export async function fileEmail(req, res) {
   }
   catch (error) {
     res.status(500).send("Internal Server Error")
+    console.log(error)
   }
+}
+
+
+export function renderLogins(req, res){
+  res.render('login')
 }

@@ -7,6 +7,7 @@ import route from './routes/userRoute.js'
 import admins from './routes/adminRoute.js'
 import files from './routes/fileRoute.js'
 import exphbs from 'express-handlebars'
+import passport from "./middlewares/passport.js"
 
 
 dotenv.config()
@@ -26,8 +27,8 @@ app.use(files)
 app.use(route)
 app.use(express.static('public'))
 app.use(express.static('files'))
-
-
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 

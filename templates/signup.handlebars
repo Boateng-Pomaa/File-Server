@@ -63,8 +63,8 @@
     document.getElementById("signup-form").addEventListener("submit", function(event) {
       event.preventDefault() // Prevent the form from submitting
 
-      var username = document.getElementById("username").value;
-      var password = document.getElementById("password").value;
+      var username = document.getElementById("username").value
+      var password = document.getElementById("password").value
      
       // Client-side validation
       var messageElement = document.getElementById("message");
@@ -80,8 +80,8 @@
       }
 
       // Make an AJAX request to the signup endpoint
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/signup", true);
+      var xhr = new XMLHttpRequest()
+      xhr.open("POST", "/signup", true)
       xhr.setRequestHeader("Content-Type", "application/json")
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -91,7 +91,7 @@
             // Redirect to the login page after a brief delay
             setTimeout(function() {
               window.location.href = "/login"
-            }, 2000);
+            }, 2000)
           } else {
             // Signup failed, display error message
             messageElement.innerHTML = "Signup failed. Please try again."
