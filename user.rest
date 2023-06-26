@@ -1,8 +1,8 @@
-@url ="http://localhost:5000/"
+@url ="https://lizzy-files-f7a38d64c9a1.herokuapp.com/"
 
 
 ### Signup
-POST http://localhost:5000/signup 
+POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/signup 
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 
 ####login
-POST http://localhost:5000/login HTTP/1.1
+POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/login 
 Content-Type: application/json
 
 {
@@ -22,10 +22,10 @@ Content-Type: application/json
 
 
 ####verifying
-GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/verify/6492dcb7178b5a303f0a0555/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpveWVtaW02OTFAYnlvcmJ5LmNvbSIsImlhdCI6MTY4NzM0NjM1OSwiZXhwIjoxNjg3NDMyNzU5fQ.P7tDpQDNEwH-1QgBDwZ2KpUOwtWy1eMXRry6Du1lwHo
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/verify/
 
 ###requesting for password reset
-POST http://localhost:5000/user/passwordresetrequest HTTP/1.1
+POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/passwordresetrequest HTTP/1.1
 Content-Type:application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type:application/json
 
 
 ###setting new pasword
-GET http://localhost:5000/user/passwordreset/6436056afde08114ee929c40/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxpbmRhLmJvYXRlbmdAYW1hbGl0ZWNoLm9yZyIsImlhdCI6MTY4NzEyMzcxNCwiZXhwIjoxNjg3MTI1NTE0fQ.KFY9U9DBI4yZxNZfhik6QAuLPz0gFjt_eqMtITuBxes HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/passwordreset/
 Content-Type: application/json
 
 {
@@ -56,8 +56,8 @@ Content-Type: application/json
 
 
  #####
- GET http://localhost:3000/logins HTTP/1.1
+ GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/logins 
 
 
   #####
- GET http://localhost:5000/register HTTP/1.1
+ GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/register

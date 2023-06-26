@@ -12,7 +12,7 @@ Content-Type: application/json
 
 
 ####login
-POST http://localhost:5000/login/admin HTTP/1.1
+POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/login/admin 
 Content-Type: application/json
 
 {
@@ -22,4 +22,4 @@ Content-Type: application/json
 
 
 ####
-GET http://localhost:3000/admin/downloads HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/admin/downloads 

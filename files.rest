@@ -1,28 +1,28 @@
-@url ="http://localhost:5000/
+@url ="https://lizzy-files-f7a38d64c9a1.herokuapp.com/""
 
 ###searching for a file
-GET http://localhost:5000/search/man HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/search/man
 
 
 ##### files feed
-GET http://localhost:5000/home HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/home
 
 
 ###sending file email
-POST http://localhost:3000/sendfile HTTP/1.1
+POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/sendfile
 Content-Type:application/json
 
 {
     "email":"linda.boateng@amalitech.org",
-    "filename":"Man_United.png"
+    "filename":"Screenshot_2023.04.07_00.34.33.749.png"
 }
 
 #####downloading
-GET http://localhost:3000/download/sachet.pdf HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/download/sachet.pdf
 
 
 ####
-GET http://localhost:3000/admin/downloads HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/admin/downloads
 
 ####
-GET http://localhost:3000/preview/Man_United.png HTTP/1.1
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/preview/Man_United.png HTTP/1.1
