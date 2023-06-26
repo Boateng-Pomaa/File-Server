@@ -2,11 +2,11 @@
 
 
 ### Signup
-POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/signup 
+POST http://localhost:5000/signup 
 Content-Type: application/json
 
 {
-    "email": "joyemim691@byorby.com",
+    "email": "lindapomaa27@gmail.com",
     "password": "111111"
 }
 
@@ -56,7 +56,8 @@ Content-Type: application/json
 
 
  #####
- GET http://localhost:5000/logins HTTP/1.1
+ GET http://localhost:3000/logins HTTP/1.1
 
 
- 
+  #####
+ GET http://localhost:5000/register HTTP/1.1

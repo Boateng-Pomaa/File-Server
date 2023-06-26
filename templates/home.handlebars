@@ -9,36 +9,93 @@
     <h1>Lizzyz Business</h1>
     {{#each files}}
     <p>{{this}}</p>
-   <pre> <p><a href="/download/{{this}}" download>Download</a>   <a href="/preview/{{this}}" target="_blank">Preview</a> </p>  </pre>
-     <form action="/sendfile" method="POST">
-        <input type="hidden" name="file" value="{{this}}">
-        <input type="email" name="email" placeholder="Enter email address">
-        <button type="submit">Send to Email</button>
-    </form>
+   <pre> <p><a href="/download/{{this}}" download="{{this}}">Download</a>   <a href="/preview/{{this}}" target="_blank">Preview</a> </p>  </pre>
+     <form action="/sendfile" method="POST" enctype="multipart/form-data" >
+        <input type="email" id="emailInput" placeholder="Enter email" required>
+        <input type="hidden" id="filename" value="{{this}}">
+        <input type="submit" onsubmit="sendEmail('{{this}}')" value="Send File">
+      </form>
     {{/each}}
 
+
+
+
     {{!-- <script>
-        function sendToEmail(file) {
-            fetch('/sendfile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ file: file })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Email sent successfully!');
-                    } else {
-                        alert('Failed to send email.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while sending the email.');
-                });
+    document.getElementById("email-form").addEventListener("submit", function(event) {
+      event.preventDefault() // Prevent the form from submitting
+
+      var email = document.getElementById("email").value
+      var filename = document.getElementById("filename").value
+
+      
+
+      // Create a data object with the form values
+      var data = {
+        email: email,
+        filename: filename
+      }
+
+      // Make an AJAX request to the login endpoint
+      var xhr = new XMLHttpRequest()
+      xhr.open("POST", "/sendfile", true)
+      xhr.setRequestHeader("Content-Type", "application/json")
+      xhr.setRequestHeader("Authorization", "Bearer " +req.session.token)
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+              alert('Email sent successfully!')
+           
+          } else {
+           
+             alert('Error sending email!')
+          }
         }
-    </script> --}}
+      }
+      xhr.send(JSON.stringify(data))
+    })
+  </script> --}}
+
+    <script>
+    function sendEmail(file) {
+      var emailInput = document.getElementById('emailInput')
+      var email = emailInput.value
+
+      fetch('http://localhost:300/sendfile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          {{!-- 'Authorization': 'Bearer '+token --}}
+        },
+        body: JSON.stringify({
+          email: email,
+          filename: file
+          
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Email sent successfully:', response.statusText)
+          // Handle success response
+          alert('Email sent successfully!');
+        } else {
+          console.error('Error sending email:', response.statusText)
+          // Handle error response
+          alert('Error sending email!');
+        }
+      })
+      .catch(error => {
+        console.error('Error sending email:', error)
+        // Handle error response
+        alert('Error sending email!');
+      })
+    }
+  </script>
 </body>
 
 </html>
+
+
+
+
+
+

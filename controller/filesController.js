@@ -53,13 +53,13 @@ function isValidToken(token) {
 ///downloading files
 export async function downloadFile(req, res) {
     try {
-        const token = req.headers.authorization.split(' ')[1]
-        if (!token || !isValidToken(token)) {
-            return res.status(401).json({ message: "Please login to continue" })
-        }
+        // const token = req.headers.authorization.split(' ')[1]
+        // if (!token || !isValidToken(token)) {
+        //     return res.status(401).json({ message: "Please login to continue" })
+        // }
         const { filename } = req.params
         res.download(
-            filename,
+            `./public/files/${filename}`,
             `downloaded-${filename}`,
             async (err) => {
                 if (err) {

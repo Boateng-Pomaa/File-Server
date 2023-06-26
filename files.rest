@@ -1,7 +1,7 @@
 @url ="http://localhost:5000/
 
 ###searching for a file
-GET http://localhost:5000/search/Calen HTTP/1.1
+GET http://localhost:5000/search/man HTTP/1.1
 
 
 ##### files feed
@@ -9,8 +9,7 @@ GET http://localhost:5000/home HTTP/1.1
 
 
 ###sending file email
-POST http://localhost:5000/sendfile HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzNjA1NmFmZGUwODExNGVlOTI5YzQwIiwiZW1haWwiOiJsaW5kYS5ib2F0ZW5nQGFtYWxpdGVjaC5vcmciLCJpYXQiOjE2ODcxMzk2OTEsImV4cCI6MTY4NzIyNjA5MX0.TThSGJReah6XsJGLnCQJM9GJwVIZP13rzphdJGLrOXk
+POST http://localhost:3000/sendfile HTTP/1.1
 Content-Type:application/json
 
 {
@@ -19,11 +18,11 @@ Content-Type:application/json
 }
 
 #####downloading
-GET http://localhost:5000/download/sachet.pdf HTTP/1.1
+GET http://localhost:3000/download/sachet.pdf HTTP/1.1
 
 
 ####
-GET http://localhost:5000/admin/downloads HTTP/1.1
+GET http://localhost:3000/admin/downloads HTTP/1.1
 
 ####
-GET http://localhost:5000/preview/Man_United.png HTTP/1.1
+GET http://localhost:3000/preview/Man_United.png HTTP/1.1

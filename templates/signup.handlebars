@@ -52,7 +52,7 @@
   <div class="container">
     <h2>Signup</h2>
     <form id="signup-form">
-      <input type="text" id="username" placeholder="Username" required>
+      <input type="text" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Password" required>
       <input type="submit" value="Sign up">
     </form>
@@ -63,19 +63,19 @@
     document.getElementById("signup-form").addEventListener("submit", function(event) {
       event.preventDefault() // Prevent the form from submitting
 
-      var username = document.getElementById("username").value
+      var email = document.getElementById("email").value
       var password = document.getElementById("password").value
      
       // Client-side validation
       var messageElement = document.getElementById("message");
-      if (!username || !password) {
+      if (!email || !password) {
         messageElement.innerHTML = "Please fill in all fields."
         return
       }
 
       // Create a data object with the form values
       var data = {
-        username: username,
+        email: email,
         password: password
       }
 
@@ -89,9 +89,9 @@
             // Signup successful, display success message
             messageElement.innerHTML = "Signup successful!, Please check your email to verify your account"
             // Redirect to the login page after a brief delay
-            setTimeout(function() {
+            {{!-- setTimeout(function() {
               window.location.href = "/login"
-            }, 2000)
+            }, 2000) --}}
           } else {
             // Signup failed, display error message
             messageElement.innerHTML = "Signup failed. Please try again."

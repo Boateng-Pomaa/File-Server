@@ -70,10 +70,10 @@ export async function registerUser(req, res) {
     })
 
     if (user) {
-      res.status(200).json({
-        message: 'Registration Successful',
-        user
-      })
+     return res.status(200).send(
+        'Registration Successful  Please Check Your Email to Verify Your Account'
+      
+      )
 
 
     } else {
@@ -96,7 +96,7 @@ export async function verifyUser(req, res) {
     var user = await userModel.findById({ _id: id }, { token })
     if (user) {
       user = await userModel.findByIdAndUpdate({ _id: id }, { verified: true })
-      res.redirect('/home')
+      res.redirect('/logins')
     }
     else {
       return res.status(400).json({
@@ -253,10 +253,10 @@ function isValidToken(token) {
 ///sending file to an email
 export async function fileEmail(req, res) {
   try {
-    const token = req.headers.authorization.split(' ')[1]
-    if (!token || !isValidToken(token)) {
-      return res.status(401).json({ message: "Please login to continue" })
-    }
+    // const token = req.headers.authorization.split(' ')[1]
+    // if (!token || !isValidToken(token)) {
+    //   return res.status(401).json({ message: "Please login to continue" })
+    // }
     const { email, filename } = req.body
     const path = `./public/files/${filename}`
     const mailOptions = {
@@ -299,4 +299,12 @@ export async function fileEmail(req, res) {
 
 export function renderLogins(req, res){
   res.render('login')
+}
+
+export function renderRegister(req, res){
+  res.render('signup')
+}
+
+export function renderForgot(req,res){
+  res.render('password')
 }

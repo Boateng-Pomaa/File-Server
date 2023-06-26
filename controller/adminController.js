@@ -105,3 +105,8 @@ export async function adminView(req, res) {
    
 
 }
+
+
+export function adView(req,res){
+    res.render('index')
+}

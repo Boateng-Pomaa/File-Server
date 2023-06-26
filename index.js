@@ -8,7 +8,7 @@ import admins from './routes/adminRoute.js'
 import files from './routes/fileRoute.js'
 import exphbs from 'express-handlebars'
 import passport from "./middlewares/passport.js"
-
+import session from "express-session"
 
 dotenv.config()
 
@@ -27,12 +27,17 @@ app.use(files)
 app.use(route)
 app.use(express.static('public'))
 app.use(express.static('files'))
+app.use(session({
+    secret: process.env.JWT_SECRET,
+    resave:false,
+    saveUninitialized:true
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 
 
 
-const port = process.env.PORT ||3000
+const port = process.env.PORT ||5000
 const db = process.env.DB_URL
 
 
