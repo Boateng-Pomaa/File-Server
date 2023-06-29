@@ -16,7 +16,7 @@ const upload = multer({
     },
     fileFilter(req, file, cb) {
       const ext = file.mimetype.split("/")[1]
-      if (!ext.match(/(jpeg|jpg|png|pdf|doc|docx|xlsx|xls)$/)) {
+      if (!ext.match(/(jpeg|jpg|png|pdf|doc|docx|xlsx|xls|WEBM|MPG|MP2|MPEG|MPE|MPV|OGG|MP4|M4P|M4V|AVI|WMV|MOV|QT|FLV|SWF|AVCHD| MP3| WMA| AAC| WAV|RAW)$/)) {
         return cb(
           new Error(
             'only upload files with jpg, jpeg, png, pdf, doc, docx, xslx, xls format.'

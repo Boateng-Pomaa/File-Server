@@ -23,3 +23,7 @@ Content-Type: application/json
 
 ####
 GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/admin/downloads 
+
+
+#####
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/adupload

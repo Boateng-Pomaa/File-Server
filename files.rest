@@ -1,7 +1,7 @@
 @url ="https://lizzy-files-f7a38d64c9a1.herokuapp.com/""
 
 ###searching for a file
-GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/search/man
+GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/search/
 
 
 ##### files feed
@@ -13,7 +13,7 @@ POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/sendfile
 Content-Type:application/json
 
 {
-    "email":"linda.boateng@amalitech.org",
+    "email":"millicent.opoku@amalitech.org",
     "filename":"Screenshot_2023.04.07_00.34.33.749.png"
 }
 
