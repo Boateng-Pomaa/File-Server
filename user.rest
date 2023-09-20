@@ -1,8 +1,8 @@
-@url ="https://lizzy-files-f7a38d64c9a1.herokuapp.com/"
+@url ="http://localhost:3000"
 
 
 ### Signup
-POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/signup 
+POST http://localhost:3000/signup 
 Content-Type: application/json
 
 {
@@ -12,29 +12,29 @@ Content-Type: application/json
 
 
 ####login
-POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/login 
+POST http://localhost:3000/login 
 Content-Type: application/json
 
 {
-     "email": "linda.boateng@amalitech.org",
-    "password": "333333"
+     "email": "lindapomaa27@gmail.com",
+    "password": "111111"
 }
 
 
 ####verifying
-GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/verify/
+GET http://localhost:3000/user/verify/
 
 ###requesting for password reset
-POST https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/passwordresetrequest HTTP/1.1
+POST http://localhost:3000/user/passwordresetrequest HTTP/1.1
 Content-Type:application/json
 
 {
-    "email":"linda.boateng@amalitech.org"
+    "email":"lindapomaa27@gmail.com"
 }
 
 
 ###setting new pasword
-GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/user/passwordreset/
+GET http://localhost:3000/user/passwordreset/6498e1dc08db3a1e80086b4b/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxpbmRhcG9tYWEyN0BnbWFpbC5jb20iLCJpYXQiOjE2OTUyMzE3MTgsImV4cCI6MTY5NTIzMzUxOH0.KCdN1vkMXq3O2qJA5ATp533rNxBMIBQMEJISZp_4N28
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 
 
 #####
- POST  https://lizzy-files-f7a38d64c9a1.herokuapp.com/login
+ POST  http://localhost:3000/login
  Content-Type: application/json
  
  {
@@ -52,12 +52,12 @@ Content-Type: application/json
 }
 
 #######
- GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/home
+ GET http://localhost:3000/home
 
 
  #####
- GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/logins 
+ GET http://localhost:3000/logins 
 
 
   #####
- GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/register
+ GET http://localhost:3000/register

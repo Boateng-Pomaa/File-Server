@@ -1,7 +1,7 @@
 import fs from 'fs'
 import mime from 'mime'
 import path from 'path'
-import {fileURLToPath} from 'url'
+import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 import { fileModel } from '../models/fileSchema.js'
@@ -31,6 +31,7 @@ export async function uploadFile(req, res) {
         }
     }
     catch (error) {
+        console.log(error)
         res.status(500).send('Internal Server Error')
     }
 }
@@ -108,7 +109,7 @@ export async function filesFeed(req, res) {
             if (err) {
                 return res.status(400).send("Error Loading Files")
             } else {
-                res.render('home',{ files })
+                res.render('home', { files })
             }
         })
     } catch (error) {
@@ -121,26 +122,102 @@ export async function filesFeed(req, res) {
 }
 
 
+
+
+function readFileData(filePath) {
+    // Read file synchronously and return the file data as a string
+    try {
+        const fileData = fs.readFileSync(filePath)
+        return fileData
+    } catch (error) {
+        console.error('Error reading file:', error)
+        return null
+    }
+}
+
+function getFileType(filePath) {
+
+    const fileExtension = path.extname(filePath).toLowerCase()
+
+    if (isImageExtension(fileExtension)) {
+        return 'image'
+    } else if (isPDFExtension(fileExtension)) {
+        return 'pdf'
+    } else if (isAudioExtension(fileExtension)) {
+        return 'audio'
+    } else if (isVideoExtension(fileExtension)) {
+        return 'video'
+    }
+}
+
+function isImageExtension(extension) {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif']
+    return imageExtensions.includes(extension)
+}
+
+function isPDFExtension(extension) {
+    return extension === '.pdf'
+}
+
+function isAudioExtension(extension) {
+    const audioExtension = ['.mp3', '.raw', '.wav']
+    return audioExtension.includes(extension)
+}
+
+function isVideoExtension(extension) {
+    const videoExtension = ['.mp4', '.avi', '.ts', '.qt', '.mov']
+    return videoExtension.includes(extension)
+}
+
+
+
+
+
 ////previewing files
 export async function filePreview(req, res) {
     try {
         const { filename } = req.params
-        const filePath = `./public/files/${filename}`
+        const filePath = `public/files/${filename}`
         console.log(filePath)
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(404).send('File Not Found')
-            } else {
-                const contentType = mime.getType(filename)
-                if (contentType) {
-                     res.setHeader('Content-Type', contentType)
-                }
-                res.send(data)
 
+
+
+        fs.readFile(filePath, (err, filename) => {
+            if (err) {
+                console.error('Error reading file:', err)
+                return res.status(500).send('Error reading file')
             }
+
+
+            // const fileType = getFileType(filePath) // Implement this function to determine the file type
+            // const base64Data = filename.toString('base64');
+            // const fileDataUri = `data:${fileType};base64,${base64Data}`
+            // console.log(fileDataUri)
+
+            //res.render('preview', { filePath, fileType })
+
+            const contentType = mime.getType(filename)
+            if (contentType) {
+                return res.setHeader('Content-Type', `application/${contentType}`)
+            }
+            res.send(filename)
+
         })
+
+        //     const contentType = mime.getType(filename)
+        //     if (contentType) {
+        //        return  res.setHeader('Content-Type', `application/${contentType}`)
+        //     }
+        //     fs.readFile(path.resolve(filePath), (err, data) => {
+        //         if (err) {
+        //             console.log(err)
+        //             return res.status(404).send('File Not Found')
+        //         }else {
+        //             res.render('preview',{data} )
+        //         }
+        //     })
     } catch (error) {
+        console.log(error)
         res.status(500).send("Internal Server Error")
     }
 

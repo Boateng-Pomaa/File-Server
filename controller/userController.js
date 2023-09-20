@@ -8,14 +8,9 @@ import bcrypt from 'bcrypt'
 
 dotenv.config()
 
-
-
-
-
-
 export async function registerUser(req, res) {
   try {
-    const { email, password, userRole } = req.body;
+    const { email, password } = req.body;
 
     // Validation
     if (!email || !password) {
@@ -69,18 +64,9 @@ export async function registerUser(req, res) {
       }
     })
 
-    if (user) {
-     return res.status(200).send(
-        'Registration Successful  Please Check Your Email to Verify Your Account'
-      
-      )
-
-
-    } else {
-      return res.status(400).json({
-        message: "Registration unsuccessful"
-      })
-    }
+    if (user) return res.status(200).send('Registration Successful  Please Check Your Email to Verify Your Account')
+   else return res.status(400).json({message: "Registration unsuccessful"})
+  
   } catch (err) {
     console.log(err)
     res.status(500).send('Internal server error')

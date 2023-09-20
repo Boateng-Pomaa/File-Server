@@ -27,3 +27,11 @@ GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/admin/downloads
 
 #####
 GET https://lizzy-files-f7a38d64c9a1.herokuapp.com/adupload
+
+
+####
+POST http://localhost:3000/adupload
+
+
+####
+GET http://localhost:3000/home HTTP/1.1

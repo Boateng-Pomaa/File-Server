@@ -26,8 +26,8 @@
             const fileField =document.querySelector('input[type="file"]')
             formData.append("file",fileField.files[0])
 
-
-            const response = fetch('https://lizzy-files-f7a38d64c9a1.herokuapp.com/admin/upload',{
+//https://lizzy-files-f7a38d64c9a1.herokuapp.com
+            const response = fetch('http://localhost:3000/admin/upload',{
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

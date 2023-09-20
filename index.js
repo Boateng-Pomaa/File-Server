@@ -13,7 +13,20 @@ import session from "express-session"
 dotenv.config()
 
 const app = express()
-const hbs = exphbs.create({defaultLayout: false})
+const hbs = exphbs.create({   helpers: {
+    isImage: function(fileType) {
+      return fileType === 'image'
+    },
+    isAudio: function(fileType) {
+      return fileType === 'audio'
+    },
+    isVideo: function(fileType) {
+      return fileType === 'video'
+    },
+    isPDF: function(fileType) {
+      return fileType === 'pdf'
+    }
+  },defaultLayout: false})
 
 app.use(cors())
 app.use(express.json())
