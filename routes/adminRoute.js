@@ -14,8 +14,8 @@ router.post('/register/admin', registerUser)
   .post('/login/admin', [
     check("A valid password is required").isLength({ min: 4 })
   ], loginUser)
-  .post('/admin/upload', upload.single('file'), uploadFile)
-  .get('/admin/downloads', adminView)
+  .post('/admin/upload', protect, upload.single('file'), uploadFile)
+  .get('/admin/downloads',protect, adminView)
   .get('/adupload',adView)
 
 

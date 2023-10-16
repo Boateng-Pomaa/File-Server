@@ -109,12 +109,12 @@ export async function loginUser(req, res) {
         expiresIn: "1d"
       })
       user.token = token
-      res.redirect('/home')
-      // return res.status(200).json({
-      //   message: "Logged in successful",
-      //   user
+      // res.redirect('/home')
+      return res.status(200).json({
+        message: "Logged in successful",
+        user
 
-      // })
+      })
 
     } else {
       return res.status(400).json({
@@ -219,30 +219,9 @@ export async function resetPassword(req, res) {
   }
 }
 
-
-function isValidToken(token) {
-  try {
-    const userToken = jwt.verify(token, process.env.JWT_SECRET)
-   const expired =userToken.exp
-    if (expired < Date.now()/1000) {
-      return false
-    }
-    else {
-      return true
-    }
-  } catch (error) {
-    return false
-  }
-
-
-}
 ///sending file to an email
 export async function fileEmail(req, res) {
   try {
-    // const token = req.headers.authorization.split(' ')[1]
-    // if (!token || !isValidToken(token)) {
-    //   return res.status(401).json({ message: "Please login to continue" })
-    // }
     const { email, filename } = req.body
     const path = `./public/files/${filename}`
     const mailOptions = {
